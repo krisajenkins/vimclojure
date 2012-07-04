@@ -626,6 +626,10 @@ endfunction
 function! vimclojure#RunTests(all)
 	let ns = b:vimclojure_namespace
 
+	if ns !~ "\.test\.[^.]*$"
+		let ns = substitute( ns, '.*\.', '&test.', '' )
+	endif
+
 	let result = call(function("vimclojure#ExecuteNailWithInput"),
 				\ [ "RunTests", "", "-n", ns ] + (a:all ? [ "-a" ] : []))
 	let resultBuffer = g:vimclojure#ClojureResultBuffer.New(ns)
